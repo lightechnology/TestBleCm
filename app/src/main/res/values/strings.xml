@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">TestBleCm</string>
+    <string name="unknown_device">Unknown device</string>
+</resources>
