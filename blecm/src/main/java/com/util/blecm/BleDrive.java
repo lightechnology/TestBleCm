@@ -42,6 +42,7 @@ public class BleDrive implements MgBluetoothGatt {
         this.mHandler = new Handler();
         this.context = context;
         this.foundBleDevice = foundBleDevice;
+        this.bluetoothAdapter = BleDrive.initBleAdapter(context, false);
     }
 
     /**
@@ -49,9 +50,9 @@ public class BleDrive implements MgBluetoothGatt {
      *
      * @return
      */
-    public boolean checkIsSupportBle() {
+    public static boolean checkIsSupportBle(Context context, boolean show) {
         boolean result = context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE);
-        if (!result)
+        if (!result && show)
             Toast.makeText(context, R.string.ble_not_supported, Toast.LENGTH_SHORT).show();
         return result;
     }
@@ -61,15 +62,13 @@ public class BleDrive implements MgBluetoothGatt {
      *
      * @return
      */
-    public boolean initBleAdapter() {
+    public static BluetoothAdapter initBleAdapter(Context context, boolean show) {
         final BluetoothManager bluetoothManager = (BluetoothManager) context.getSystemService(Context.BLUETOOTH_SERVICE);
-        bluetoothAdapter = bluetoothManager.getAdapter();
+        BluetoothAdapter bluetoothAdapter = bluetoothManager.getAdapter();
         // 检查设备上是否支持蓝牙
-        if (bluetoothAdapter == null) {
+        if (bluetoothAdapter == null && show)
             Toast.makeText(context, R.string.error_bluetooth_not_supported, Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        return true;
+        return bluetoothAdapter;
     }
 
     /**
@@ -103,7 +102,7 @@ public class BleDrive implements MgBluetoothGatt {
      */
     public void destroy() {
         context.unregisterReceiver(bleScanBroadcastReceiver);
-        disconnect();
+        //disconnect();
     }
 
     /**

@@ -48,7 +48,7 @@ public class MainActivity extends AppActivity implements BleAcListener {
         bleDeviceListAdapter = new BleDeviceListAdapter(MainActivity.this.getLayoutInflater());
         bleScan_lst.setAdapter(bleDeviceListAdapter);
         bleDrive = new BleDrive(this, bleDeviceListAdapter);
-        if (!bleDrive.checkIsSupportBle() || !bleDrive.initBleAdapter())
+        if (!BleDrive.checkIsSupportBle(this, true) || null == BleDrive.initBleAdapter(this, true))
             finish();
         bleDrive.init(SERVICEID, READID, WRITEID, this);
     }
